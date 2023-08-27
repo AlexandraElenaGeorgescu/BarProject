@@ -255,11 +255,29 @@ namespace BarProject.Database_access
             {
                 connection.Open();
 
-                string insertQuery = "INSERT INTO employees (Name, Position, Phone_number, Email_address) " +
-                                     "VALUES (@Name, @Position, @PhoneNumber, @EmailAddress)";
+                // Query to get the highest existing Employee_id
+                string maxIdQuery = "SELECT MAX(Employee_id) FROM employees";
+                int newEmployeeId;
+
+                using (SqlCommand maxIdCommand = new SqlCommand(maxIdQuery, connection))
+                {
+                    object result = maxIdCommand.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        newEmployeeId = Convert.ToInt32(result) + 1;
+                    }
+                    else
+                    {
+                        newEmployeeId = 1; // Start from 1 if no records exist
+                    }
+                }
+
+                string insertQuery = "INSERT INTO employees (Employee_id, Name, Position, Phone_number, Email_address) " +
+                                     "VALUES (@EmployeeId, @Name, @Position, @PhoneNumber, @EmailAddress)";
 
                 using (SqlCommand command = new SqlCommand(insertQuery, connection))
                 {
+                    command.Parameters.AddWithValue("@EmployeeId", newEmployeeId);
                     command.Parameters.AddWithValue("@Name", employee.Name);
                     command.Parameters.AddWithValue("@Position", employee.Position);
                     command.Parameters.AddWithValue("@PhoneNumber", employee.PhoneNumber);
@@ -312,10 +330,30 @@ namespace BarProject.Database_access
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                string insertQuery = "INSERT INTO bills (Customer_id, Employee_id, Total_amount) " +
-                                     "VALUES (@CustomerId, @EmployeeId, @TotalAmount)";
+
+                // Query to get the highest existing Bill_id
+                string maxIdQuery = "SELECT MAX(Bill_id) FROM bills";
+                int newBillId;
+
+                using (SqlCommand command = new SqlCommand(maxIdQuery, connection))
+                {
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        newBillId = Convert.ToInt32(result) + 1;
+                    }
+                    else
+                    {
+                        newBillId = 1; // Start from 1 if no records exist
+                    }
+                }
+
+                string insertQuery = "INSERT INTO bills (Bill_id, Customer_id, Employee_id, Total_amount) " +
+                                     "VALUES (@BillId, @CustomerId, @EmployeeId, @TotalAmount)";
+
                 using (SqlCommand command = new SqlCommand(insertQuery, connection))
                 {
+                    command.Parameters.AddWithValue("@BillId", newBillId);
                     command.Parameters.AddWithValue("@CustomerId", bill.CustomerId);
                     command.Parameters.AddWithValue("@EmployeeId", bill.EmployeeId);
                     command.Parameters.AddWithValue("@TotalAmount", bill.TotalAmount);
@@ -328,14 +366,35 @@ namespace BarProject.Database_access
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                string insertQuery = "INSERT INTO orders (Bill_id, Item_id, Item_type, Quantity) " +
-                                     "VALUES (@BillId, @ItemId, @ItemType, @Quantity)";
+
+                // Query to get the highest existing Order_id
+                string maxIdQuery = "SELECT MAX(Order_id) FROM orders";
+                int newOrderId;
+
+                using (SqlCommand command = new SqlCommand(maxIdQuery, connection))
+                {
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        newOrderId = Convert.ToInt32(result) + 1;
+                    }
+                    else
+                    {
+                        newOrderId = 1; // Start from 1 if no records exist
+                    }
+                }
+
+                string insertQuery = "INSERT INTO orders (Order_id, Bill_id, Item_id, Item_type, Quantity) " +
+                                     "VALUES (@OrderId, @BillId, @ItemId, @ItemType, @Quantity)";
+
                 using (SqlCommand command = new SqlCommand(insertQuery, connection))
                 {
+                    command.Parameters.AddWithValue("@OrderId", newOrderId);
                     command.Parameters.AddWithValue("@BillId", order.BillId);
                     command.Parameters.AddWithValue("@ItemId", order.ItemId);
                     command.Parameters.AddWithValue("@ItemType", order.ItemType);
                     command.Parameters.AddWithValue("@Quantity", order.Quantity);
+
                     command.ExecuteNonQuery();
                 }
             }
