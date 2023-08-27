@@ -16,6 +16,9 @@ class Program
         EmployeeService employeeService = new EmployeeService(databaseAccess);
         BillService billService = new BillService(databaseAccess);
         OrderService orderService = new OrderService(databaseAccess);
+        TableService tableService = new TableService(databaseAccess);
+        EmployeeBillService employeeBillService = new EmployeeBillService(databaseAccess);
+        CustomerSitAtService customerSitAtService = new CustomerSitAtService(databaseAccess);
 
         while (true)
         {
@@ -24,7 +27,10 @@ class Program
             Console.WriteLine("2. Manage Employees");
             Console.WriteLine("3. Manage Bills");
             Console.WriteLine("4. Manage Orders");
-            Console.WriteLine("5. Exit");
+            Console.WriteLine("5. Manage Tables");
+            Console.WriteLine("6. Manage Employee Bills");
+            Console.WriteLine("7. Manage Customer Sit Ats");
+            Console.WriteLine("8. Exit");
 
             string choice = Console.ReadLine();
 
@@ -43,6 +49,15 @@ class Program
                     ManageOrders(orderService);
                     break;
                 case "5":
+                    ManageTables(tableService);
+                    break;
+                case "6":
+                    ManageEmployeeBills(employeeBillService);
+                    break;
+                case "7":
+                    ManageCustomerSittings(customerSitAtService);
+                    break;
+                case "8":
                     Console.WriteLine("Exiting the program...");
                     return;
                 default:
@@ -473,5 +488,309 @@ class Program
 
         orderService.DeleteOrder(orderId);
         Console.WriteLine("Order deleted successfully.");
+    }
+    static void ManageTables(TableService tableService)
+    {
+        while (true)
+        {
+            Console.WriteLine("Table Management Menu:");
+            Console.WriteLine("1. View Tables");
+            Console.WriteLine("2. Add Table");
+            Console.WriteLine("3. Update Table");
+            Console.WriteLine("4. Delete Table");
+            Console.WriteLine("5. Back to Main Menu");
+
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    DisplayTables(tableService);
+                    break;
+                case "2":
+                    AddTable(tableService);
+                    break;
+                case "3":
+                    UpdateTable(tableService);
+                    break;
+                case "4":
+                    DeleteTable(tableService);
+                    break;
+                case "5":
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Please select again.");
+                    break;
+            }
+        }
+    }
+
+    static void DisplayTables(TableService tableService)
+    {
+        IEnumerable<Table> tables = tableService.GetTables();
+
+        Console.WriteLine("Tables:");
+        foreach (Table table in tables)
+        {
+            Console.WriteLine($"ID: {table.TableId}, Number: {table.Number}, Capacity: {table.Capacity}, Customer ID: {table.CustomerId ?? -1}");
+        }
+    }
+
+    static void AddTable(TableService tableService)
+    {
+        Console.Write("Enter Table Number: ");
+        int number = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Table Capacity: ");
+        int capacity = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Customer ID: ");
+        int customerId = Convert.ToInt32(Console.ReadLine());
+
+        Table newTable = new Table { Number = number, Capacity = capacity, CustomerId = customerId };
+        tableService.InsertTable(newTable);
+        Console.WriteLine("Table added successfully.");
+    }
+
+    static void UpdateTable(TableService tableService)
+    {
+        Console.Write("Enter Table ID to update: ");
+        int tableId = Convert.ToInt32(Console.ReadLine());
+
+        Table existingTable = tableService.GetTables().FirstOrDefault(t => t.TableId == tableId);
+
+        if (existingTable == null)
+        {
+            Console.WriteLine("Table not found.");
+            return;
+        }
+
+        Console.Write("Enter New Table Number: ");
+        int newNumber = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter New Table Capacity: ");
+        int newCapacity = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter New Customer ID (or leave empty for no customer): ");
+        int newCustomerId = Convert.ToInt32(Console.ReadLine());
+
+        existingTable.Number = newNumber;
+        existingTable.Capacity = newCapacity;
+        existingTable.CustomerId = newCustomerId;
+
+        tableService.UpdateTable(existingTable);
+        Console.WriteLine("Table updated successfully.");
+    }
+
+    static void DeleteTable(TableService tableService)
+    {
+        Console.Write("Enter Table ID to delete: ");
+        int tableId = Convert.ToInt32(Console.ReadLine());
+
+        tableService.DeleteTable(tableId);
+        Console.WriteLine("Table deleted successfully.");
+    }
+    static void ManageEmployeeBills(EmployeeBillService employeeBillService)
+    {
+        while (true)
+        {
+            Console.WriteLine("EmployeeBill Management Menu:");
+            Console.WriteLine("1. View EmployeeBills");
+            Console.WriteLine("2. Add EmployeeBill");
+            Console.WriteLine("3. Update EmployeeBill");
+            Console.WriteLine("4. Delete EmployeeBill");
+            Console.WriteLine("5. Back to Main Menu");
+
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    DisplayEmployeeBills(employeeBillService);
+                    break;
+                case "2":
+                    AddEmployeeBill(employeeBillService);
+                    break;
+                case "3":
+                    UpdateEmployeeBill(employeeBillService);
+                    break;
+                case "4":
+                    DeleteEmployeeBill(employeeBillService);
+                    break;
+                case "5":
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Please select again.");
+                    break;
+            }
+        }
+    }
+
+    static void DisplayEmployeeBills(EmployeeBillService employeeBillService)
+    {
+        IEnumerable<EmployeeBill> employeeBills = employeeBillService.GetEmployeeBills();
+
+        Console.WriteLine("EmployeeBills:");
+        foreach (EmployeeBill employeeBill in employeeBills)
+        {
+            Console.WriteLine($"Employee ID: {employeeBill.EmployeeId}, Bill ID: {employeeBill.BillId}");
+        }
+    }
+
+    static void AddEmployeeBill(EmployeeBillService employeeBillService)
+    {
+        Console.Write("Enter Employee ID: ");
+        int employeeId = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Bill ID: ");
+        int billId = Convert.ToInt32(Console.ReadLine());
+
+        EmployeeBill newEmployeeBill = new EmployeeBill { EmployeeId = employeeId, BillId = billId };
+        employeeBillService.InsertEmployeeBill(newEmployeeBill);
+        Console.WriteLine("EmployeeBill added successfully.");
+    }
+
+    static void UpdateEmployeeBill(EmployeeBillService employeeBillService)
+    {
+        Console.Write("Enter Employee ID to update: ");
+        int employeeId = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Bill ID to update: ");
+        int billId = Convert.ToInt32(Console.ReadLine());
+
+        EmployeeBill existingEmployeeBill = employeeBillService.GetEmployeeBills()
+            .FirstOrDefault(eb => eb.EmployeeId == employeeId && eb.BillId == billId);
+
+        if (existingEmployeeBill == null)
+        {
+            Console.WriteLine("EmployeeBill not found.");
+            return;
+        }
+
+
+        Console.Write("Enter New Bill ID: ");
+        int newEmployeeId = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter New Item ID: ");
+        int newBillId = Convert.ToInt32(Console.ReadLine());
+
+        existingEmployeeBill.EmployeeId = newEmployeeId;
+        existingEmployeeBill.BillId = newBillId;
+
+        employeeBillService.UpdateEmployeeBill(existingEmployeeBill);
+        Console.WriteLine("EmployeeBill updated successfully.");
+    }
+
+    static void DeleteEmployeeBill(EmployeeBillService employeeBillService)
+    {
+        Console.Write("Enter Employee ID to delete: ");
+        int employeeId = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Bill ID to delete: ");
+        int billId = Convert.ToInt32(Console.ReadLine());
+
+        employeeBillService.DeleteEmployeeBill(employeeId, billId);
+        Console.WriteLine("EmployeeBill deleted successfully.");
+    }
+    static void ManageCustomerSittings(CustomerSitAtService customerSitAtService)
+    {
+        while (true)
+        {
+            Console.WriteLine("CustomerSitAt Management Menu:");
+            Console.WriteLine("1. View CustomerSittings");
+            Console.WriteLine("2. Add CustomerSitting");
+            Console.WriteLine("3. Update CustomerSitting");
+            Console.WriteLine("4. Delete CustomerSitting");
+            Console.WriteLine("5. Back to Main Menu");
+
+            string choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    DisplayCustomerSittings(customerSitAtService);
+                    break;
+                case "2":
+                    AddCustomerSitting(customerSitAtService);
+                    break;
+                case "3":
+                    UpdateCustomerSitting(customerSitAtService);
+                    break;
+                case "4":
+                    DeleteCustomerSitting(customerSitAtService);
+                    break;
+                case "5":
+                    return;
+                default:
+                    Console.WriteLine("Invalid choice. Please select again.");
+                    break;
+            }
+        }
+    }
+
+    static void DisplayCustomerSittings(CustomerSitAtService customerSitAtService)
+    {
+        IEnumerable<CustomerSitAt> customerSittings = customerSitAtService.GetCustomerSittings();
+
+        Console.WriteLine("CustomerSittings:");
+        foreach (CustomerSitAt customerSitting in customerSittings)
+        {
+            Console.WriteLine($"Customer ID: {customerSitting.CustomerId}, Table ID: {customerSitting.TableId}");
+        }
+    }
+
+    static void AddCustomerSitting(CustomerSitAtService customerSitAtService)
+    {
+        Console.Write("Enter Customer ID: ");
+        int customerId = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Table ID: ");
+        int tableId = Convert.ToInt32(Console.ReadLine());
+
+        CustomerSitAt newCustomerSitting = new CustomerSitAt { CustomerId = customerId, TableId = tableId };
+        customerSitAtService.InsertCustomerSitAt(newCustomerSitting);
+        Console.WriteLine("CustomerSitting added successfully.");
+    }
+
+    static void UpdateCustomerSitting(CustomerSitAtService customerSitAtService)
+    {
+        Console.Write("Enter Customer ID to update: ");
+        int customerId = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Table ID to update: ");
+        int tableId = Convert.ToInt32(Console.ReadLine());
+
+        CustomerSitAt existingCustomerSitting = customerSitAtService.GetCustomerSittings()
+            .FirstOrDefault(cs => cs.CustomerId == customerId && cs.TableId == tableId);
+
+        if (existingCustomerSitting == null)
+        {
+            Console.WriteLine("CustomerSitting not found.");
+            return;
+        }
+
+        Console.Write("Enter New Customer Id: ");
+        int newCustomerId = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter New Table Id: ");
+        int newTableId = Convert.ToInt32(Console.ReadLine());
+
+        existingCustomerSitting.CustomerId = newCustomerId;
+        existingCustomerSitting.TableId = newTableId;
+
+        customerSitAtService.UpdateCustomerSitAt(existingCustomerSitting);
+        Console.WriteLine("CustomerSitting updated successfully.");
+    }
+
+    static void DeleteCustomerSitting(CustomerSitAtService customerSitAtService)
+    {
+        Console.Write("Enter Customer ID to delete: ");
+        int customerId = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Enter Table ID to delete: ");
+        int tableId = Convert.ToInt32(Console.ReadLine());
+
+        customerSitAtService.DeleteCustomerSitAt(customerId, tableId);
+        Console.WriteLine("CustomerSitting deleted successfully.");
     }
 }

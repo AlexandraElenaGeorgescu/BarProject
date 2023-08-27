@@ -205,7 +205,15 @@ namespace BarProject.Database_access
                     command.Parameters.AddWithValue("@PhoneNumber", customer.PhoneNumber);
                     command.Parameters.AddWithValue("@EmailAddress", customer.EmailAddress);
 
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error updating customer: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
@@ -245,7 +253,15 @@ namespace BarProject.Database_access
                     command.Parameters.AddWithValue("@PhoneNumber", customer.PhoneNumber);
                     command.Parameters.AddWithValue("@EmailAddress", customer.EmailAddress);
 
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error inserting customer: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
@@ -283,7 +299,15 @@ namespace BarProject.Database_access
                     command.Parameters.AddWithValue("@PhoneNumber", employee.PhoneNumber);
                     command.Parameters.AddWithValue("@EmailAddress", employee.EmailAddress);
 
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error inserting employee: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
@@ -299,7 +323,15 @@ namespace BarProject.Database_access
                 {
                     command.Parameters.AddWithValue("@EmployeeId", employeeId);
 
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error deleting employee: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
@@ -321,7 +353,15 @@ namespace BarProject.Database_access
                     command.Parameters.AddWithValue("@PhoneNumber", employee.PhoneNumber);
                     command.Parameters.AddWithValue("@EmailAddress", employee.EmailAddress);
 
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error updating employee: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
@@ -357,7 +397,15 @@ namespace BarProject.Database_access
                     command.Parameters.AddWithValue("@CustomerId", bill.CustomerId);
                     command.Parameters.AddWithValue("@EmployeeId", bill.EmployeeId);
                     command.Parameters.AddWithValue("@TotalAmount", bill.TotalAmount);
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error inserting bill: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
@@ -395,7 +443,15 @@ namespace BarProject.Database_access
                     command.Parameters.AddWithValue("@ItemType", order.ItemType);
                     command.Parameters.AddWithValue("@Quantity", order.Quantity);
 
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error inserting order: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
@@ -408,7 +464,15 @@ namespace BarProject.Database_access
                 using (SqlCommand command = new SqlCommand(deleteQuery, connection))
                 {
                     command.Parameters.AddWithValue("@OrderId", orderId);
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error deleting order: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
@@ -421,7 +485,15 @@ namespace BarProject.Database_access
                 using (SqlCommand command = new SqlCommand(deleteQuery, connection))
                 {
                     command.Parameters.AddWithValue("@BillId", billId);
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error deleting bill: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
@@ -439,7 +511,15 @@ namespace BarProject.Database_access
                     command.Parameters.AddWithValue("@CustomerId", bill.CustomerId);
                     command.Parameters.AddWithValue("@EmployeeId", bill.EmployeeId);
                     command.Parameters.AddWithValue("@TotalAmount", bill.TotalAmount);
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error updating bill: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
@@ -458,7 +538,15 @@ namespace BarProject.Database_access
                     command.Parameters.AddWithValue("@ItemId", order.ItemId);
                     command.Parameters.AddWithValue("@ItemType", order.ItemType);
                     command.Parameters.AddWithValue("@Quantity", order.Quantity);
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error updating order: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
@@ -634,9 +722,318 @@ namespace BarProject.Database_access
                 using (SqlCommand command = new SqlCommand(deleteQuery, connection))
                 {
                     command.Parameters.AddWithValue("@CustomerId", customerId);
-                    command.ExecuteNonQuery();
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error deleting customer: " + ex.Message);
+                        throw;
+                    }
                 }
             }
         }
+        public void InsertTable(Table table)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string insertQuery = "INSERT INTO tables (Table_id, Number, Capacity, Customer_id) " +
+                                     "VALUES (@TableId, @Number, @Capacity, @CustomerId)";
+
+                // Query to get the highest existing Table_id
+                string maxIdQuery = "SELECT MAX(Table_id) FROM tables";
+
+                int newTableId;
+
+                using (SqlCommand command = new SqlCommand(maxIdQuery, connection))
+                {
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        newTableId = Convert.ToInt32(result) + 1;
+                    }
+                    else
+                    {
+                        newTableId = 1; // Start from 1 if no records exist
+                    }
+                }
+
+                using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@TableId", newTableId);
+                    command.Parameters.AddWithValue("@Number", table.Number);
+                    command.Parameters.AddWithValue("@Capacity", table.Capacity);
+                    command.Parameters.AddWithValue("@CustomerId", table.CustomerId);
+
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error inserting table: " + ex.Message);
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public void UpdateTable(Table table)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string updateQuery = "UPDATE tables " +
+                                     "SET Number = @Number, Capacity = @Capacity, Customer_id = @CustomerId " +
+                                     "WHERE Table_id = @TableId";
+
+                using (SqlCommand command = new SqlCommand(updateQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@TableId", table.TableId);
+                    command.Parameters.AddWithValue("@Number", table.Number);
+                    command.Parameters.AddWithValue("@Capacity", table.Capacity);
+                    command.Parameters.AddWithValue("@CustomerId", table.CustomerId);
+
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error updating table: " + ex.Message);
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public void DeleteTable(int tableId)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string deleteQuery = "DELETE FROM tables WHERE Table_id = @TableId";
+
+                using (SqlCommand command = new SqlCommand(deleteQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@TableId", tableId);
+
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error deleting table: " + ex.Message);
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<Table> GetTables()
+        {
+            List<Table> tables = new List<Table>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("SELECT * FROM tables", connection))
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Table table = new Table
+                        {
+                            TableId = Convert.ToInt32(reader["Table_id"]),
+                            Number = Convert.ToInt32(reader["Number"]),
+                            Capacity = Convert.ToInt32(reader["Capacity"]),
+                            CustomerId = reader["Customer_id"] != DBNull.Value ? Convert.ToInt32(reader["Customer_id"]) : (int?)null
+                        };
+                        tables.Add(table);
+                    }
+                }
+            }
+
+            return tables;
+        }
+        public IEnumerable<EmployeeBill> GetEmployeeBills()
+        {
+            List<EmployeeBill> employeeBills = new List<EmployeeBill>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("SELECT * FROM employees_bills", connection))
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        EmployeeBill employeeBill = new EmployeeBill
+                        {
+                            EmployeeId = Convert.ToInt32(reader["Employee_id"]),
+                            BillId = Convert.ToInt32(reader["Bill_id"])
+                        };
+                        employeeBills.Add(employeeBill);
+                    }
+                }
+            }
+
+            return employeeBills;
+        }
+        public void DeleteEmployeeBill(int employeeId, int billId)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string deleteQuery = "DELETE FROM employees_bills WHERE Employee_id = @EmployeeId AND Bill_id = @BillId";
+
+                using (SqlCommand command = new SqlCommand(deleteQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@EmployeeId", employeeId);
+                    command.Parameters.AddWithValue("@BillId", billId);
+
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error deleting employee-bill association: " + ex.Message);
+                        throw;
+                    }
+                }
+            }
+        }
+        public void InsertEmployeeBill(EmployeeBill employeeBill)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string insertQuery = "INSERT INTO employees_bills (Employee_id, Bill_id) " +
+                                     "VALUES (@EmployeeId, @BillId)";
+
+                using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@EmployeeId", employeeBill.EmployeeId);
+                    command.Parameters.AddWithValue("@BillId", employeeBill.BillId);
+
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error inserting employee-bill association: " + ex.Message);
+                        throw;
+                    }
+                }
+            }
+        }
+        public void UpdateEmployeeBill(EmployeeBill employeeBill)
+        {
+            // To "update" an employee-bill association, we'll first delete the existing one
+            DeleteEmployeeBill(employeeBill.EmployeeId, employeeBill.BillId);
+
+            // Then, insert the updated association
+            InsertEmployeeBill(employeeBill);
+        }
+        public IEnumerable<CustomerSitAt> GetCustomerSitAts()
+        {
+            List<CustomerSitAt> customerSitAts = new List<CustomerSitAt>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("SELECT * FROM customers_sit_at", connection))
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        CustomerSitAt customerSitAt = new CustomerSitAt
+                        {
+                            CustomerId = Convert.ToInt32(reader["Customer_id"]),
+                            TableId = Convert.ToInt32(reader["Table_id"])
+                        };
+                        customerSitAts.Add(customerSitAt);
+                    }
+                }
+            }
+
+            return customerSitAts;
+        }
+
+        public void DeleteCustomerSitAt(int customerId, int tableId)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string deleteQuery = "DELETE FROM customers_sit_at WHERE Customer_id = @CustomerId AND Table_id = @TableId";
+
+                using (SqlCommand command = new SqlCommand(deleteQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@CustomerId", customerId);
+                    command.Parameters.AddWithValue("@TableId", tableId);
+
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error deleting customer-sit-at association: " + ex.Message);
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public void InsertCustomerSitAt(CustomerSitAt customerSitAt)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                string insertQuery = "INSERT INTO customers_sit_at (Customer_id, Table_id) " +
+                                     "VALUES (@CustomerId, @TableId)";
+
+                using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@CustomerId", customerSitAt.CustomerId);
+                    command.Parameters.AddWithValue("@TableId", customerSitAt.TableId);
+
+                    try
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error inserting customer-sit-at association: " + ex.Message);
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public void UpdateCustomerSitAt(CustomerSitAt customerSitAt)
+        {
+            // To "update" a customer-sit-at association, we'll first delete the existing one
+            DeleteCustomerSitAt(customerSitAt.CustomerId, customerSitAt.TableId);
+
+            // Then, insert the updated association
+            InsertCustomerSitAt(customerSitAt);
+        }
+
     }
 }
