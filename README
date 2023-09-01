@@ -12,7 +12,7 @@ Acest fișier conține instrucțiuni pentru configurarea și utilizarea proiectu
 
 1. Deschide SQL Server Management Studio (SSMS) și conectează-te la serverul SQL local sau la cel dorit.
 
-2. Rulează scriptul SQL furnizat în fișierul `script.sql` din acest proiect pentru a crea baza de date și tabelele necesare.
+2. Rulează scriptul SQL furnizat în fișierul `FinalProjectBarDatabase.sql` din acest proiect pentru a crea baza de date și tabelele necesare.
 
 ## Configurarea Visual Studio (VS)
 
@@ -51,7 +51,7 @@ prin intermediul obiectelor SqlCommand pentru a comunica cu baza de date.
 
 Instalarea aceleași baze de date pe un alt calculator
 Pentru a instala aceeași bază de date pe alt calculator, utilizează query-ul furnizat 
-în fișierul script.sql. Rulează comenzile din acest query pe rând pentru a crea tabelele
+în fișierul FinalProjectBarDatabase.sql. Rulează comenzile din acest query pe rând pentru a crea tabelele
 și a configura baza de date exact ca în proiectul tău. Asigură-te că urmărești aceeași
 structură și denumiri pentru tabele pentru a asigura funcționarea corectă a aplicației.
 
