@@ -1,0 +1,72 @@
+# Ghid de configurare și utilizare a proiectului
+
+Acest fișier conține instrucțiuni pentru configurarea și utilizarea proiectului nostru C# de consolă care utilizează Microsoft SQL Server pentru baza de date.
+
+## Instalarea Microsoft SQL Server
+
+1. Descarcă și instalează Microsoft SQL Server din [site-ul oficial](https://www.microsoft.com/en-us/sql-server/sql-server-downloads).
+
+2. Urmărește instrucțiunile de instalare oferite de Microsoft.
+
+## Crearea bazei de date
+
+1. Deschide SQL Server Management Studio (SSMS) și conectează-te la serverul SQL local sau la cel dorit.
+
+2. Rulează scriptul SQL furnizat în fișierul `script.sql` din acest proiect pentru a crea baza de date și tabelele necesare.
+
+## Configurarea Visual Studio (VS)
+
+1. Descarcă și instalează Visual Studio de pe [site-ul oficial](https://visualstudio.microsoft.com/).
+
+2. Deschide proiectul în Visual Studio.
+
+## Configurarea conexiunii la bază de date
+
+1. În proiect, deschide fișierul `Ptoject.cs`.
+
+2. Modifică conținutul acestuia pentru a include informații de conectare la baza de date:
+
+        string connectionString = "Server=DESKTOP-VF538LC;Database=Bar;Trusted_Connection=True;";
+Daca aveti alt server sau alt nume la baza de date schimbati aceasta variabila.
+Utilizarea aplicației
+În proiect, rulează aplicația C# de consolă.
+
+Aplicația va utiliza connection string-ul pentru a se conecta la baza de date configurată anterior.
+
+Clonarea proiectului de pe Git
+Deschide terminalul sau linia de comandă.
+
+Navighează în directorul în care dorești să clonezi proiectul.
+
+Rulează următoarea comandă pentru a clona proiectul de pe Git:
+
+git clone https://github.com/AlexandraElenaGeorgescu/BarProject
+
+Implementarea operațiilor CRUD și gestionarea tabelelor
+În acest proiect, am păstrat tabelele exact așa cum erau în baza de date 
+de la laborator. Pentru a accesa și manipula datele din aceste tabele, am
+creat o clasă specială care utilizează System.Data.SqlClient pentru a efectua 
+operațiile CRUD (Create, Read, Update, Delete). Aceste metode sunt implementate
+prin intermediul obiectelor SqlCommand pentru a comunica cu baza de date.
+
+Instalarea aceleași baze de date pe un alt calculator
+Pentru a instala aceeași bază de date pe alt calculator, utilizează query-ul furnizat 
+în fișierul script.sql. Rulează comenzile din acest query pe rând pentru a crea tabelele
+și a configura baza de date exact ca în proiectul tău. Asigură-te că urmărești aceeași
+structură și denumiri pentru tabele pentru a asigura funcționarea corectă a aplicației.
+
+Dependente între tabele
+Am preferat să nu folosim stergerea sau inserarea în cascada pentru CRUD-urile noastre,
+ceea ce înseamnă că există dependențe între tabele. Asigură-te că ai grijă la aceste 
+dependențe atunci când efectuezi operații CRUD pentru a evita erori sau comportamente 
+neașteptate în aplicație.
+
+Asigurarea funcționării serverului și bazei de date
+
+Înainte de a rula aplicația, asigură-te că serverul SQL și baza de date sunt active și corect configurate.
+
+Cu aceste instrucțiuni, ar trebui să poți instala, configura și utiliza proiectul nostru C# de consolă care 
+utilizează Microsoft SQL Server pentru baza de date. Dacă întâmpini probleme, te rugăm să verifici cu atenție 
+pașii de mai sus și să asiguri că totul este configurat corect.
+
+
