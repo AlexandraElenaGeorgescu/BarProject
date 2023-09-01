@@ -31,7 +31,5 @@ namespace BarProject.Services
         {
             _databaseAccess.DeleteOrder(orderId);
         }
-
-        // Add other methods as needed
     }
 }

@@ -31,7 +31,5 @@ namespace BarProject.Services
         {
             _databaseAccess.DeleteEmployee(employeeId);
         }
-
-        // Add other methods as needed
     }
 }

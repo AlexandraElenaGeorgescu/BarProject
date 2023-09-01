@@ -19,25 +19,21 @@ namespace BarProject.Services
 
         public IEnumerable<Table> GetTables()
         {
-            // You'll need to implement this method in the DatabaseAccess class
             return _databaseAccess.GetTables();
         }
 
         public void InsertTable(Table table)
         {
-            // You'll need to implement this method in the DatabaseAccess class
             _databaseAccess.InsertTable(table);
         }
 
         public void UpdateTable(Table table)
         {
-            // You'll need to implement this method in the DatabaseAccess class
             _databaseAccess.UpdateTable(table);
         }
 
         public void DeleteTable(int tableId)
         {
-            // You'll need to implement this method in the DatabaseAccess class
             _databaseAccess.DeleteTable(tableId);
         }
     }

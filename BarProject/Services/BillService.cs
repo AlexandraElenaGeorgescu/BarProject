@@ -32,7 +32,5 @@ namespace BarProject.Services
             _databaseAccess.DeleteBill(billId);
         }
 
-
-        // Add other methods as needed
     }
 }

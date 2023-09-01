@@ -8,7 +8,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        // Replace with your actual connection string
         string connectionString = "Server=DESKTOP-VF538LC;Database=Bar;Trusted_Connection=True;";
 
         DatabaseAccess databaseAccess = new DatabaseAccess(connectionString);
