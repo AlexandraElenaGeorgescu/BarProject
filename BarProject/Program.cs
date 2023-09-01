@@ -667,10 +667,10 @@ class Program
         }
 
 
-        Console.Write("Enter New Bill ID: ");
+        Console.Write("Enter New Employee ID: ");
         int newEmployeeId = Convert.ToInt32(Console.ReadLine());
 
-        Console.Write("Enter New Item ID: ");
+        Console.Write("Enter Bill ID ID: ");
         int newBillId = Convert.ToInt32(Console.ReadLine());
 
         existingEmployeeBill.EmployeeId = newEmployeeId;
