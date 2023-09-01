@@ -51,7 +51,7 @@ prin intermediul obiectelor SqlCommand pentru a comunica cu baza de date.
 
 Instalarea aceleași baze de date pe un alt calculator
 Pentru a instala aceeași bază de date pe alt calculator, utilizează query-ul furnizat 
-în fișierul script.sql. Rulează comenzile din acest query pe rând pentru a crea tabelele
+în fișierul FinalProjectBarDatabase.sql. Rulează comenzile din acest query pe rând pentru a crea tabelele
 și a configura baza de date exact ca în proiectul tău. Asigură-te că urmărești aceeași
 structură și denumiri pentru tabele pentru a asigura funcționarea corectă a aplicației.
 
